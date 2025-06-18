@@ -702,22 +702,23 @@
     </div>
 
     <!-- Public Leaderboard -->
-    <div id="public-leaderboard">
-        <h2>Public Leaderboard</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Player</th>
-                    <th>Gold</th>
-                    <th>Level</th>
-                    <th>Wins</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody id="public-leaderboard-body">
-                <!-- Filled by JavaScript -->
-            </tbody>
-        </table>
+    <div id="public-leaderboard" style="max-width:800px;margin:2rem auto;background:#181028;border-radius:16px;padding:2rem;box-shadow:0 0 30px #9d4edd33;">
+      <h2 style="color:#9d4edd;text-align:center;margin-bottom:1.5rem;">Public Leaderboard</h2>
+      <table style="width:100%;color:#fff;border-collapse:collapse;">
+        <thead>
+          <tr style="color:#ffd700;">
+            <th style="text-align:left;padding:8px;">Player</th>
+            <th style="text-align:right;padding:8px;">Gold</th>
+            <th style="text-align:right;padding:8px;">Level</th>
+            <th style="text-align:right;padding:8px;">Wins</th>
+            <th style="text-align:right;padding:8px;">Health</th>
+            <th style="text-align:right;padding:8px;">Attack</th>
+            <th style="text-align:right;padding:8px;">Defense</th>
+            <th style="text-align:right;padding:8px;">Status</th>
+          </tr>
+        </thead>
+        <tbody id="public-leaderboard-body"></tbody>
+      </table>
     </div>
 
     <script>
@@ -1072,6 +1073,9 @@
                     gold: data.gold || 0,
                     level: data.level || 1,
                     wins: data.wins || 0,
+                    health: data.health || 0,
+                    attack: data.attack || 0,
+                    defense: data.defense || 0,
                     online: data.online || false // Set this flag in your multiplayer code if you want live status
                 });
             }
@@ -1091,6 +1095,9 @@
             <td style="padding:8px;text-align:right;">${p.gold}</td>
             <td style="padding:8px;text-align:right;">${p.level}</td>
             <td style="padding:8px;text-align:right;">${p.wins}</td>
+            <td style="padding:8px;text-align:right;">${p.health}</td>
+            <td style="padding:8px;text-align:right;">${p.attack}</td>
+            <td style="padding:8px;text-align:right;">${p.defense}</td>
             <td style="padding:8px;text-align:right;">
               ${p.online ? '<span style="color:#55ff55;">Online</span>' : '<span style="color:#888;">Offline</span>'}
             </td>
