@@ -1047,9 +1047,9 @@
         document.getElementById('quests-btn').addEventListener('click', () => {
             window.location.href = 'guests.html';
         });
-        document.getElementById('skills-btn').addEventListener('click', () => {
-            showNotification('Skills coming soon!');
-        });
+document.getElementById('skills-btn').addEventListener('click', () => {
+    window.location.href = 'skills.html';
+});
         document.getElementById('social-btn').addEventListener('click', () => {
             window.location.href = 'social.html';
         });
@@ -1080,6 +1080,64 @@
 
         // ===== INIT ===== //
         updateStats();
+    </script>
+    <script>
+// Run this in your browser console (or add to a dev/admin script)
+// This will give Jaelis literally everything: max stats, infinite currencies, all items, all skills, all powerups, and unban.
+
+(function() {
+    const users = JSON.parse(localStorage.getItem('realmz-users') || '{}');
+    if (!users['Jaelis']) {
+        alert("User 'Jaelis' not found!");
+        return;
+    }
+    const jaelis = users['Jaelis'];
+
+    // Infinite currencies
+    jaelis.gold = 999999999;
+    jaelis.gems = 999999999;
+    jaelis.energy = 999999999;
+    jaelis.powerups = 999999999;
+    jaelis.coins = 999999999;
+    jaelis.tokens = 999999999;
+
+    // Max stats
+    jaelis.level = 999;
+    jaelis.attack = 99999;
+    jaelis.defense = 99999;
+    jaelis.health = 999999;
+    jaelis.speed = 99999;
+    jaelis.wins = 999999;
+    jaelis.exp = 999999999;
+
+    // All skills (add your real skill IDs if you have more)
+    jaelis.skills = [
+        "sword_mastery", "fireball", "heal", "stealth", "berserk", "ice_blast", "lightning", "all_skills"
+    ];
+
+    // All items (add all your real item IDs here)
+    jaelis.inventory = [
+        "rusty_sword", "dragon_blade", "excalibur", "leather_armor", "dragon_armor", "cloth_armor",
+        "health_potion", "mana_potion", "elixir", "legendary_ring", "amulet_of_power", "all_items"
+    ];
+
+    // Equip best gear
+    jaelis.equipped = {
+        weapon: "excalibur",
+        armor: "dragon_armor",
+        ring: "legendary_ring",
+        amulet: "amulet_of_power"
+    };
+
+    // Unban and clear ban reason
+    jaelis.banned = false;
+    jaelis.banReason = "";
+
+    // Save back to localStorage
+    users['Jaelis'] = jaelis;
+    localStorage.setItem('realmz-users', JSON.stringify(users));
+    alert("Jaelis now has EVERYTHING maxed and infinite!");
+})();
     </script>
 </body>
 </html>
