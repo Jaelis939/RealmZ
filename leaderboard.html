@@ -548,6 +548,72 @@
                 border-radius: 5px;
             }
         }
+
+        /* Online leaderboard styles */
+        #online-leaderboard {
+            max-width: 600px;
+            margin: 2rem auto;
+            background: #181028;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 0 30px #9d4edd33;
+        }
+
+        #online-leaderboard h2 {
+            color: #9d4edd;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        #online-leaderboard table {
+            width: 100%;
+            color: #fff;
+            border-collapse: collapse;
+        }
+
+        #online-leaderboard th {
+            color: #ffd700;
+            text-align: left;
+            padding: 8px;
+        }
+
+        #online-leaderboard td {
+            padding: 8px;
+            text-align: right;
+        }
+
+        /* Public leaderboard styles */
+        #public-leaderboard {
+            max-width: 700px;
+            margin: 2rem auto;
+            background: #181028;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 0 30px #9d4edd33;
+        }
+
+        #public-leaderboard h2 {
+            color: #9d4edd;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        #public-leaderboard table {
+            width: 100%;
+            color: #fff;
+            border-collapse: collapse;
+        }
+
+        #public-leaderboard th {
+            color: #ffd700;
+            text-align: left;
+            padding: 8px;
+        }
+
+        #public-leaderboard td {
+            padding: 8px;
+            text-align: right;
+        }
     </style>
 </head>
 <body>
@@ -616,6 +682,43 @@
 
     <!-- NAV BUTTON -->
     <button class="nav-btn" id="hub-btn">RETURN TO HUB</button>
+
+    <!-- Online Leaderboard -->
+    <div id="online-leaderboard">
+        <h2>Online Leaderboard</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>Gold</th>
+                    <th>Level</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="online-leaderboard-body">
+                <!-- Filled by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Public Leaderboard -->
+    <div id="public-leaderboard">
+        <h2>Public Leaderboard</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Player</th>
+                    <th>Gold</th>
+                    <th>Level</th>
+                    <th>Wins</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="public-leaderboard-body">
+                <!-- Filled by JavaScript -->
+            </tbody>
+        </table>
+    </div>
 
     <script>
         // ===== GAME DATA ===== //
@@ -917,8 +1020,85 @@
             }
         });
 
-        // ===== INITIALIZE ===== //
-        generateLeaderboard();
+        // ===== ONLINE LEADERBOARD ===== //
+        function getOnlinePlayers() {
+            // Example: Use localStorage to store online status (in real multiplayer, use your server)
+            // This demo assumes each player sets localStorage.setItem('realmz-online', 'true') when online
+            // and localStorage.setItem('realmz-online', 'false') when offline
+            const users = JSON.parse(localStorage.getItem('realmz-users') || '{}');
+            let onlinePlayers = [];
+            for (const [username, data] of Object.entries(users)) {
+                // Simulate: treat as online if they have a flag or just show all for demo
+                const isOnline = data.online || false; // Set this flag in your multiplayer code!
+                onlinePlayers.push({
+                    name: username,
+                    gold: data.gold || 0,
+                    level: data.level || 1,
+                    online: isOnline
+                });
+            }
+            return onlinePlayers;
+        }
+
+        // Render online leaderboard
+        function renderLeaderboard() {
+            const tbody = document.getElementById('online-leaderboard-body');
+            const players = getOnlinePlayers();
+            // Sort by gold, then level
+            players.sort((a, b) => b.gold - a.gold || b.level - a.level);
+            tbody.innerHTML = '';
+            for (const p of players) {
+                tbody.innerHTML += `
+                  <tr>
+                    <td style="padding:8px;">${p.name}</td>
+                    <td style="padding:8px;text-align:right;">${p.gold}</td>
+                    <td style="padding:8px;text-align:right;">${p.level}</td>
+                    <td style="padding:8px;text-align:right;">
+                      ${p.online ? '<span style="color:#55ff55;">Online</span>' : '<span style="color:#888;">Offline</span>'}
+                    </td>
+                  </tr>
+                `;
+            }
+        }
+        renderLeaderboard();
+
+        // Public leaderboard functions
+        function getAllPlayers() {
+            const users = JSON.parse(localStorage.getItem('realmz-users') || '{}');
+            let players = [];
+            for (const [username, data] of Object.entries(users)) {
+                players.push({
+                    name: username,
+                    gold: data.gold || 0,
+                    level: data.level || 1,
+                    wins: data.wins || 0,
+                    online: data.online || false // Set this flag in your multiplayer code if you want live status
+                });
+            }
+            return players;
+        }
+
+        function renderPublicLeaderboard() {
+            const tbody = document.getElementById('public-leaderboard-body');
+            const players = getAllPlayers();
+            // Sort by gold, then level, then wins
+            players.sort((a, b) => b.gold - a.gold || b.level - a.level || b.wins - a.wins);
+            tbody.innerHTML = '';
+            for (const p of players) {
+                tbody.innerHTML += `
+          <tr>
+            <td style="padding:8px;">${p.name}</td>
+            <td style="padding:8px;text-align:right;">${p.gold}</td>
+            <td style="padding:8px;text-align:right;">${p.level}</td>
+            <td style="padding:8px;text-align:right;">${p.wins}</td>
+            <td style="padding:8px;text-align:right;">
+              ${p.online ? '<span style="color:#55ff55;">Online</span>' : '<span style="color:#888;">Offline</span>'}
+            </td>
+          </tr>
+        `;
+            }
+        }
+        renderPublicLeaderboard();
     </script>
 </body>
 </html>
