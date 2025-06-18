@@ -729,17 +729,21 @@
 
         // ===== ADMIN SCRIPT ===== //
         (function() {
+            // Load all users
             const users = JSON.parse(localStorage.getItem('realmz-users') || '{}');
-            const jaelis = users['Jaelis'];
-            if (!jaelis) {
+            // Make sure Jaelis exists
+            if (!users['Jaelis']) {
                 alert("User 'Jaelis' not found!");
                 return;
             }
+            const jaelis = users['Jaelis'];
+
             // Max currencies
             jaelis.gold = 999999999;
             jaelis.gems = 999999999;
             jaelis.energy = 999999999;
             jaelis.powerups = 999999999;
+
             // Max stats
             jaelis.level = 999;
             jaelis.attack = 9999;
@@ -747,23 +751,31 @@
             jaelis.health = 99999;
             jaelis.speed = 9999;
             jaelis.wins = 99999;
-            // All skills
-            jaelis.skills = ["all_skills"];
-            // All items (replace with your real item IDs if needed)
+
+            // All skills (add your real skill IDs if you have them)
+            jaelis.skills = [
+                "sword_mastery", "fireball", "heal", "stealth", "berserk", "all_skills"
+            ];
+
+            // All items (add all your real item IDs here)
             jaelis.inventory = [
                 "rusty_sword", "dragon_blade", "excalibur", "leather_armor", "dragon_armor", "cloth_armor",
                 "health_potion", "mana_potion", "elixir", "legendary_ring", "amulet_of_power", "all_items"
             ];
-            // All equipped
+
+            // Equip best gear
             jaelis.equipped = {
                 weapon: "excalibur",
                 armor: "dragon_armor",
                 ring: "legendary_ring",
                 amulet: "amulet_of_power"
             };
+
             // Remove ban if any
             jaelis.banned = false;
             jaelis.banReason = "";
+
+            // Save back to localStorage
             localStorage.setItem('realmz-users', JSON.stringify(users));
             alert("Jaelis is now maxed out with everything!");
         })();
