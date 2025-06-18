@@ -1094,7 +1094,6 @@ document.getElementById('skills-btn').addEventListener('click', () => {
 (function() {
     const users = JSON.parse(localStorage.getItem('realmz-users') || '{}');
     if (!users['Jaelis']) {
-        alert("User 'Jaelis' not found!");
         return;
     }
     const jaelis = users['Jaelis'];
@@ -1142,7 +1141,6 @@ document.getElementById('skills-btn').addEventListener('click', () => {
     // Save back to localStorage
     users['Jaelis'] = jaelis;
     localStorage.setItem('realmz-users', JSON.stringify(users));
-    alert("Jaelis now has EVERYTHING maxed and infinite!");
 })();
     </script>
 </body>
