@@ -789,7 +789,7 @@
           <div>
             <h3 style="color:#9d4edd;margin-bottom:0.5rem;">Max Out All Stats & Money</h3>
             <input id="dev-max-username" type="text" placeholder="Username" style="width:60%;padding:7px;border-radius:5px;border:1px solid #9d4edd;">
-            <button id="dev-max-btn" style="background:#9d4edd;color:#fff;padding:7px 18px;border:none;border-radius:5px;margin-top:10px;cursor:pointer;">Max All Stats & Give Crazy Money</button>
+            <button id="dev-max-btn" style="background:#9d4edd;color:#fff;padding:7px 18px;border:none;border-radius:5px;margin-top:10px;cursor:pointer;">Max All Stats & Give Infinite</button>
             <div id="dev-max-msg" style="margin-top:8px;font-size:0.9rem;"></div>
           </div>
         </div>
@@ -802,9 +802,13 @@
     </style>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Only allow Jaelis to open the dev panel (optional: remove this check if you want all devs)
+      // Only allow Jaelis to open the dev panel
       const currentUser = localStorage.getItem('realmz-current-user');
-      if (currentUser !== "Jaelis") return;
+      if (currentUser !== "Jaelis") {
+        // Hide panel and do not bind key
+        document.getElementById('dev-panel-overlay').remove();
+        return;
+      }
 
       // Toggle panel with '
       document.addEventListener('keydown', function(e) {
@@ -820,6 +824,38 @@
         document.getElementById('dev-panel-overlay').style.display = "none";
       };
 
+      // Give everything max helper
+      function giveEverythingMax(userObj) {
+        userObj.gold = 999999999;
+        userObj.gems = 999999999;
+        userObj.energy = 999999999;
+        userObj.powerups = 999999999;
+        userObj.coins = 999999999;
+        userObj.tokens = 999999999;
+        userObj.level = 999;
+        userObj.attack = 99999;
+        userObj.defense = 99999;
+        userObj.health = 999999;
+        userObj.speed = 99999;
+        userObj.wins = 999999;
+        userObj.exp = 999999999;
+        userObj.skills = [
+          "sword_mastery", "fireball", "heal", "stealth", "berserk", "ice_blast", "lightning", "all_skills"
+        ];
+        userObj.inventory = [
+          "rusty_sword", "dragon_blade", "excalibur", "leather_armor", "dragon_armor", "cloth_armor",
+          "health_potion", "mana_potion", "elixir", "legendary_ring", "amulet_of_power", "all_items"
+        ];
+        userObj.equipped = {
+          weapon: "excalibur",
+          armor: "dragon_armor",
+          ring: "legendary_ring",
+          amulet: "amulet_of_power"
+        };
+        userObj.banned = false;
+        userObj.banReason = "";
+      }
+
       // Ban forever
       document.getElementById('dev-ban-btn').onclick = function() {
         const user = document.getElementById('dev-ban-username').value.trim();
@@ -834,60 +870,30 @@
         showMsg('dev-ban-msg', `Banned ${user} forever.`, "#55ff55");
       };
 
-      // Unlimited resources
+      // Unlimited resources (actually gives everything maxed)
       document.getElementById('dev-unlim-btn').onclick = function() {
         let users = JSON.parse(localStorage.getItem('realmz-users') || '{}');
         const user = document.getElementById('dev-unlim-username').value.trim();
-        function giveUnlim(u) {
-          u.gold = 999999999;
-          u.gems = 999999999;
-          u.energy = 999999999;
-          u.powerups = 999999999;
-          u.inventory = ["all_items"];
-        }
         if (user) {
           if (!users[user]) return showMsg('dev-unlim-msg', "User not found!", "#ff5555");
-          giveUnlim(users[user]);
-          showMsg('dev-unlim-msg', `Unlimited resources given to ${user}`, "#55ff55");
+          giveEverythingMax(users[user]);
+          showMsg('dev-unlim-msg', `Unlimited everything given to ${user}`, "#55ff55");
         } else {
-          Object.values(users).forEach(giveUnlim);
-          showMsg('dev-unlim-msg', "Unlimited resources given to ALL users", "#55ff55");
+          Object.values(users).forEach(giveEverythingMax);
+          showMsg('dev-unlim-msg', "Unlimited everything given to ALL users", "#55ff55");
         }
         localStorage.setItem('realmz-users', JSON.stringify(users));
       };
 
-      // Max stats & crazy money
+      // Max stats & infinite everything
       document.getElementById('dev-max-btn').onclick = function() {
         let users = JSON.parse(localStorage.getItem('realmz-users') || '{}');
         const user = document.getElementById('dev-max-username').value.trim();
         if (!user) return showMsg('dev-max-msg', "Enter username!", "#ff5555");
         if (!users[user]) return showMsg('dev-max-msg', "User not found!", "#ff5555");
-        users[user].level = 999;
-        users[user].attack = 9999;
-        users[user].defense = 9999;
-        users[user].health = 99999;
-        users[user].speed = 9999;
-        users[user].wins = 99999;
-        users[user].skills = ["all_skills"];
-        users[user].inventory = [
-          "rusty_sword", "dragon_blade", "excalibur", "leather_armor", "dragon_armor", "cloth_armor",
-          "health_potion", "mana_potion", "elixir", "legendary_ring", "amulet_of_power", "all_items"
-        ];
-        users[user].equipped = {
-          weapon: "excalibur",
-          armor: "dragon_armor",
-          ring: "legendary_ring",
-          amulet: "amulet_of_power"
-        };
-        // Give crazy money
-        users[user].gold = 999999999;
-        users[user].gems = 999999999;
-        users[user].energy = 999999999;
-        users[user].powerups = 999999999;
-        users[user].banned = false;
-        users[user].banReason = "";
+        giveEverythingMax(users[user]);
         localStorage.setItem('realmz-users', JSON.stringify(users));
-        showMsg('dev-max-msg', `Maxed all stats and gave crazy money to ${user}`, "#55ff55");
+        showMsg('dev-max-msg', `Maxed all stats and gave infinite everything to ${user}`, "#55ff55");
       };
 
       function showMsg(id, msg, color) {
