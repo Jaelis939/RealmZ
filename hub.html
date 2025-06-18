@@ -1088,58 +1088,49 @@ document.getElementById('skills-btn').addEventListener('click', () => {
         updateStats();
     </script>
     <script>
-// Run this in your browser console (or add to a dev/admin script)
-// This will give Jaelis literally everything: max stats, infinite currencies, all items, all skills, all powerups, and unban.
+// Run this in your browser console or add to a dev/admin script
+// This will give both Jaelis and Juggg everything maxed and infinite
 
 (function() {
     const users = JSON.parse(localStorage.getItem('realmz-users') || '{}');
-    if (!users['Jaelis']) {
-        return;
-    }
-    const jaelis = users['Jaelis'];
-
-    // Infinite currencies
-    jaelis.gold = 999999999;
-    jaelis.gems = 999999999;
-    jaelis.energy = 999999999;
-    jaelis.powerups = 999999999;
-    jaelis.coins = 999999999;
-    jaelis.tokens = 999999999;
-
-    // Max stats
-    jaelis.level = 999;
-    jaelis.attack = 99999;
-    jaelis.defense = 99999;
-    jaelis.health = 999999;
-    jaelis.speed = 99999;
-    jaelis.wins = 999999;
-    jaelis.exp = 999999999;
-
-    // All skills (add your real skill IDs if you have more)
-    jaelis.skills = [
-        "sword_mastery", "fireball", "heal", "stealth", "berserk", "ice_blast", "lightning", "all_skills"
-    ];
-
-    // All items (add all your real item IDs here)
-    jaelis.inventory = [
-        "rusty_sword", "dragon_blade", "excalibur", "leather_armor", "dragon_armor", "cloth_armor",
-        "health_potion", "mana_potion", "elixir", "legendary_ring", "amulet_of_power", "all_items"
-    ];
-
-    // Equip best gear
-    jaelis.equipped = {
-        weapon: "excalibur",
-        armor: "dragon_armor",
-        ring: "legendary_ring",
-        amulet: "amulet_of_power"
-    };
-
-    // Unban and clear ban reason
-    jaelis.banned = false;
-    jaelis.banReason = "";
-
-    // Save back to localStorage
-    users['Jaelis'] = jaelis;
+    ["Jaelis", "Juggg"].forEach(function(name) {
+        if (!users[name]) return;
+        const u = users[name];
+        // Infinite currencies
+        u.gold = 999999999;
+        u.gems = 999999999;
+        u.energy = 999999999;
+        u.powerups = 999999999;
+        u.coins = 999999999;
+        u.tokens = 999999999;
+        // Max stats
+        u.level = 999;
+        u.attack = 99999;
+        u.defense = 99999;
+        u.health = 999999;
+        u.speed = 99999;
+        u.wins = 999999;
+        u.exp = 999999999;
+        // All skills
+        u.skills = [
+            "sword_mastery", "fireball", "heal", "stealth", "berserk", "ice_blast", "lightning", "all_skills"
+        ];
+        // All items
+        u.inventory = [
+            "rusty_sword", "dragon_blade", "excalibur", "leather_armor", "dragon_armor", "cloth_armor",
+            "health_potion", "mana_potion", "elixir", "legendary_ring", "amulet_of_power", "all_items"
+        ];
+        // Equip best gear
+        u.equipped = {
+            weapon: "excalibur",
+            armor: "dragon_armor",
+            ring: "legendary_ring",
+            amulet: "amulet_of_power"
+        };
+        // Unban and clear ban reason
+        u.banned = false;
+        u.banReason = "";
+    });
     localStorage.setItem('realmz-users', JSON.stringify(users));
 })();
     </script>
